@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_home"
+            android:checked="true"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
+            android:id="@+id/drawer_wishlist"
+            android:icon="@drawable/wishlist"
+            android:title="Wish list" />
+        <item
+            android:id="@+id/drawer_logout"
+            android:icon="@drawable/logout"
+            android:title="Log out" />
+    </group>
+</menu>

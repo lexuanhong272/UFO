@@ -1,0 +1,46 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+    >
+    <item
+        android:id="@+id/s1"
+        android:showAsAction="always"
+        android:title="ROTATE X ++"/>
+
+    <item
+        android:id="@+id/s2"
+        android:showAsAction="always"
+        android:title="ROTATE X --"/>
+
+    <item
+        android:id="@+id/z1"
+        android:showAsAction="always"
+        android:title="++Z"/>
+
+    <item
+        android:id="@+id/z2"
+        android:showAsAction="always"
+        android:title="--Z"/>
+
+    <item
+        android:id="@+id/y1"
+        android:showAsAction="always"
+        android:title="++Y"/>
+
+    <item
+        android:id="@+id/y2"
+        android:showAsAction="always"
+        android:title="--Y"/>
+
+    <item
+        android:id="@+id/x1"
+        android:showAsAction="always"
+        android:title="++X"/>
+
+    <item
+        android:id="@+id/x2"
+        android:showAsAction="always"
+        android:title="--X"/>
+
+</menu>

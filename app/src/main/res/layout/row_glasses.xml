@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+
+
+    android:background="#ffffff"
+    android:orientation="vertical"
+    >
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imgv_glasses"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <TextView
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-30dp"
+        android:text="aaaaa"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:id="@+id/txt_idglasses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgv_glasses"
+        />
+    <TextView
+        android:layout_centerInParent="true"
+        android:text="bbbbb"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:id="@+id/txt_statusglasses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_idglasses"
+        />
+
+    <TextView
+        android:layout_centerInParent="true"
+        android:text="ccccc"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:id="@+id/txt_priceglasses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_statusglasses"
+        />
+
+</RelativeLayout>

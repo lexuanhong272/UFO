@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/welcomebg"
+    tools:context="com.tryon.xuanhong.tryon.MainActivity">
+
+    <TextView
+        android:id="@+id/txtWelcome"
+        android:textSize="20dp"
+        android:textColor="#0f0dab"
+        android:text="WELCOME TO TRY ON GLASSES"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp" />
+
+    <Button
+        android:width="150dp"
+        android:id="@+id/btnLoginEmail"
+        android:textColor="#ffffff"
+        android:background="#4f9c5f"
+        android:layout_below="@+id/txtWelcome"
+        android:layout_centerHorizontal="true"
+        android:text="Log in by Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:width="150dp"
+        android:id="@+id/btnLoginFace"
+        android:textColor="#ffffff"
+        android:background="#4f9c5f"
+        android:layout_below="@+id/btnLoginEmail"
+        android:layout_centerHorizontal="true"
+        android:text="Log in by Face"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp" />
+
+</RelativeLayout>
