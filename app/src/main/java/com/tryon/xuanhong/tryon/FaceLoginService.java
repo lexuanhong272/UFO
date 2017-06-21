@@ -15,5 +15,5 @@ import retrofit2.http.Part;
 public interface FaceLoginService {
     @Multipart
     @POST("/api/facelogin")
-    Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("name") RequestBody name);
+    Call<User> faceLogin(@Part MultipartBody.Part image, @Part("name") RequestBody name);
 }

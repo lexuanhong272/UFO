@@ -13,6 +13,9 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by Pinky on 13-Jun-17.
@@ -57,4 +60,7 @@ public class GlassesAdapter extends SearchAdapter<Glasses> {
         //viewHolder.imgv_glasses.setImageDrawable(context.getResources().getDrawable(filteredContainer.get(position).getPoster()));
         return convertView;
     }
+
+
+
 }

@@ -34,6 +34,31 @@ public class Manager {
         return mUserService;
     }
 
+    private FaceLoginService mFaceLoginService;
+
+    public FaceLoginService getFaceLoginService() {
+        if (mFaceLoginService == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constant.HTTP.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mFaceLoginService = retrofit.create(FaceLoginService.class);
+        }
+        return mFaceLoginService;
+    }
+
+    private EmailLoginService mEmailLoginService;
+
+    public EmailLoginService getEmailLoginService() {
+        if (mEmailLoginService == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constant.HTTP.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mEmailLoginService = retrofit.create(EmailLoginService.class);
+        }
+        return mEmailLoginService;
+    }
 
 
 }

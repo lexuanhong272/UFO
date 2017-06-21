@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 
 import com.tryon.xuanhong.tryon.object3D.views.ModelActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +45,8 @@ import butterknife.InjectView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.tryon.xuanhong.tryon.MainActivity.mainUser;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -69,22 +74,27 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Intent myIntent = getIntent();
-        Bundle myBundle =  myIntent.getBundleExtra("bundle");
-        if(myBundle != null) {
-            name = myBundle.getString("NAMEUSER");
-            email = myBundle.getString("EMAILUSER");
-            arr = myBundle.getByteArray("AVATAR");
-        }
+
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         View header = navigationView.getHeaderView(0);
         txt_name = (TextView) header.findViewById(R.id.txt_username);
         txt_email = (TextView) header.findViewById(R.id.txt_useremail);
         imv_avatar = (ImageView) header.findViewById(R.id.imgv_avatar);
-        txt_name.setText(name);
-        txt_email.setText(email);
-        //Bitmap bmp = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-        //imv_avatar.setImageBitmap(bmp);
+        txt_name.setText(mainUser.getName());
+        txt_email.setText(mainUser.getEmail());
+
+
+        File root = android.os.Environment.getExternalStorageDirectory();
+        File img = new File(root.getAbsolutePath() + "/DCIM/AVATAR/mainUser.jpg");
+
+        if(img.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(img.getAbsolutePath());
+
+            imv_avatar.setImageBitmap(myBitmap);
+
+        }
+
         ButterKnife.inject(this);
         fragmentManager = getSupportFragmentManager();
         setupView();

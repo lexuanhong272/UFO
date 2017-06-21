@@ -40,11 +40,10 @@ public class MainActivity extends Activity {
 
     public static final int PICK_IMAGE = 100;
     Button btnLoginFace, btnLoginEmail;
-    FaceLoginService service;
     private Uri mUriPhotoTaken;
 
-    public User mainUser;
-    private Manager manager;
+    public static User mainUser;
+    private Manager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +52,18 @@ public class MainActivity extends Activity {
         btnLoginFace = (Button) findViewById(R.id.btnLoginFace);
         btnLoginEmail = (Button) findViewById(R.id.btnLoginEmail);
 
-        manager = new Manager();
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-        service = new Retrofit.Builder().baseUrl(BASE_URL).client(client).build().create(FaceLoginService.class);
+        mManager = new Manager();
+//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+//        service = new Retrofit.Builder().baseUrl(BASE_URL).client(client).build().create(FaceLoginService.class);
 
         if (btnLoginFace != null) {
             btnLoginFace.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if(intent.resolveActivity(getPackageManager()) != null) {
+                    if (intent.resolveActivity(getPackageManager()) != null) {
                         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                         try {
                             File file = File.createTempFile("temp", ".png", storageDir);
@@ -78,6 +76,18 @@ public class MainActivity extends Activity {
                 }
             });
         }
+
+        if(btnLoginEmail != null){
+            btnLoginEmail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), LoginEmailActivity.class));
+                MainActivity.this.finish();
+
+                }
+            });
+        }
+
     }
 
     @Override
@@ -107,99 +117,67 @@ public class MainActivity extends Activity {
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
-            retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
-            Toast.makeText(MainActivity.this, "Please wait a few seconds while authenticating", Toast.LENGTH_LONG).show();
-            req.enqueue(new Callback<ResponseBody>() {
+
+            Call<User> callUser = mManager.getFaceLoginService().faceLogin(body, name);
+
+
+            callUser.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if(response.isSuccessful()){
-                        Toast.makeText(MainActivity.this, "Success log in", Toast.LENGTH_SHORT).show();
-                        final ResponseBody res = response.body();
-                        Log.d("res", res.toString() + " == " + res.contentType() + " ++ " +res.contentLength() + " ** " + res.source().toString());
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(MainActivity.this, "Log in successfully", Toast.LENGTH_SHORT).show();
+                        mainUser = response.body();
 
-                        String content = res.source().toString().substring(0, res.source().toString().length() - 1);
+                        Log.d("mainUser", mainUser.toString());
+                        Log.d("mainUser", mainUser.Email);
+                        Log.d("mainUser", mainUser.Name);
+                        Log.d("mainUser", mainUser.Id);
+                        Log.d("mainUser", mainUser.Avatar);
 
-                        Log.d("content", content);
-                        int id_pos = content.indexOf("Id");
-                        int name_pos = content.indexOf("Name");
-                        int email_pos = content.indexOf("Email");
-                        Log.d("id_pos", id_pos + "");
-                        Log.d("name_pos", name_pos + "");
-                        Log.d("email_pos", email_pos + "");
+                        byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
 
+                        File root1 = android.os.Environment.getExternalStorageDirectory();
+                        File dir1 = new File(root1.getAbsolutePath() + "/DCIM/AVATAR/");
+                        dir1.mkdirs();
+                        File file1 = new File(dir1, "mainUser" + ".jpg");
+                        try {
+                            FileOutputStream f = new FileOutputStream(file1);
 
-//                        mainUser = (User) res.source();
-//                        Log.d("mainUser", "" + mainUser);
-
-
-
-
-//                        int len = res.source().toString().length();
-//
-//                        //USER_ID = Integer.parseInt(String.valueOf(res.source().toString().substring(7, len - 2)));
-//                        Log.d("userid",USER_ID + "");
-//                        Log.d("id", res.source().toString().substring(7, len - 2) + "");
-//
-//
-//
-//
-//                        Call<User> callUserId = manager.getUserService().getUserWithId(USER_ID);
-//
-//                        callUserId.enqueue(new Callback<User>() {
-//                            @Override
-//                            public void onResponse(Call<User> call, Response<User> response) {
-//                                mainUser = response.body();
-//                                byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
-//
-//
-//                                File root1 = android.os.Environment.getExternalStorageDirectory();
-//                                File dir1 = new File(root1.getAbsolutePath() + "/DCIM/AVATAR/");
-//                                dir1.mkdirs();
-//                                File file1 = new File(dir1, "mainUser" + ".jpg");
-//                                try {
-//                                    FileOutputStream f = new FileOutputStream(file1);
-//
-//                                    f.write(bytearrayMTL);
-//                                    Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-//                                } catch (FileNotFoundException e) {
-//                                    e.printStackTrace();
-//                                    Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                    Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<User> call, Throwable t) {
-//                                Toast.makeText(MainActivity.this, "fail get user id", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
+                            f.write(bytearrayMTL);
+                            //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                        }
 
                         MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
                         MainActivity.this.finish();
 
                     }
-                    else{
-                        Toast.makeText(MainActivity.this, "New person or can not detect face!", Toast.LENGTH_LONG).show();
-                        Toast.makeText(MainActivity.this, "Please sign up at PC first then try to log in again", Toast.LENGTH_LONG).show();
 
-                        int sc = response.code();
-                        Log.d("ERRORR", "" + sc);
+                    else {
+                        Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
                     }
+//                    int sc = response.code();
+//                    switch (sc) {
+//                        case 404:
+//                            Toast.makeText(MainActivity.this, "Can not find your data", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(MainActivity.this, "Please sign up", Toast.LENGTH_LONG).show();
+//                            break;
+//                    }
 
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    t.printStackTrace();
-                    Toast.makeText(MainActivity.this, "Fail log in task, check your wifi connection and try again", Toast.LENGTH_LONG).show();
+                public void onFailure(Call<User> call, Throwable t) {
+                    //Toast.makeText(MainActivity.this, "SERVER NOT RESPONSE OR TIME CONSUMING", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
                 }
             });
-
-
 
         }
     }
 }
-

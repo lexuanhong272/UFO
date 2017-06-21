@@ -18,7 +18,6 @@ import retrofit2.http.Query;
 
 public interface UserService {
 
-    @GET("/api/user/")
-    Call<User> getUserWithId(int id);
+
 
 }
