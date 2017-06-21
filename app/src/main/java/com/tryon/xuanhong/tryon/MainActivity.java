@@ -8,15 +8,19 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -29,14 +33,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.tryon.xuanhong.tryon.Constant.HTTP.BASE_URL;
+
 public class MainActivity extends Activity {
 
-    public String USER_ID = "-1";
-    public static final String BASE_URL = "http://192.168.137.1:2055";
+
     public static final int PICK_IMAGE = 100;
     Button btnLoginFace, btnLoginEmail;
     FaceLoginService service;
     private Uri mUriPhotoTaken;
+
+    public User mainUser;
+    private Manager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         btnLoginFace = (Button) findViewById(R.id.btnLoginFace);
         btnLoginEmail = (Button) findViewById(R.id.btnLoginEmail);
+
+        manager = new Manager();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -98,22 +108,82 @@ public class MainActivity extends Activity {
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
             retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
+            Toast.makeText(MainActivity.this, "Please wait a few seconds while authenticating", Toast.LENGTH_LONG).show();
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if(response.isSuccessful()){
                         Toast.makeText(MainActivity.this, "Success log in", Toast.LENGTH_SHORT).show();
-                        ResponseBody res = response.body();
+                        final ResponseBody res = response.body();
                         Log.d("res", res.toString() + " == " + res.contentType() + " ++ " +res.contentLength() + " ** " + res.source().toString());
-                        USER_ID = res.source() + "";
-                        Toast.makeText(MainActivity.this, USER_ID, Toast.LENGTH_SHORT).show();
+
+                        String content = res.source().toString().substring(0, res.source().toString().length() - 1);
+
+                        Log.d("content", content);
+                        int id_pos = content.indexOf("Id");
+                        int name_pos = content.indexOf("Name");
+                        int email_pos = content.indexOf("Email");
+                        Log.d("id_pos", id_pos + "");
+                        Log.d("name_pos", name_pos + "");
+                        Log.d("email_pos", email_pos + "");
+
+
+//                        mainUser = (User) res.source();
+//                        Log.d("mainUser", "" + mainUser);
+
+
+
+
+//                        int len = res.source().toString().length();
+//
+//                        //USER_ID = Integer.parseInt(String.valueOf(res.source().toString().substring(7, len - 2)));
+//                        Log.d("userid",USER_ID + "");
+//                        Log.d("id", res.source().toString().substring(7, len - 2) + "");
+//
+//
+//
+//
+//                        Call<User> callUserId = manager.getUserService().getUserWithId(USER_ID);
+//
+//                        callUserId.enqueue(new Callback<User>() {
+//                            @Override
+//                            public void onResponse(Call<User> call, Response<User> response) {
+//                                mainUser = response.body();
+//                                byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
+//
+//
+//                                File root1 = android.os.Environment.getExternalStorageDirectory();
+//                                File dir1 = new File(root1.getAbsolutePath() + "/DCIM/AVATAR/");
+//                                dir1.mkdirs();
+//                                File file1 = new File(dir1, "mainUser" + ".jpg");
+//                                try {
+//                                    FileOutputStream f = new FileOutputStream(file1);
+//
+//                                    f.write(bytearrayMTL);
+//                                    Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+//                                } catch (FileNotFoundException e) {
+//                                    e.printStackTrace();
+//                                    Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                    Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<User> call, Throwable t) {
+//                                Toast.makeText(MainActivity.this, "fail get user id", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 
                         MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
                         MainActivity.this.finish();
 
                     }
                     else{
-                        Toast.makeText(MainActivity.this, "New person! Please sign up first and then try to log in again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "New person or can not detect face!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Please sign up at PC first then try to log in again", Toast.LENGTH_LONG).show();
+
                         int sc = response.code();
                         Log.d("ERRORR", "" + sc);
                     }
@@ -123,9 +193,12 @@ public class MainActivity extends Activity {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     t.printStackTrace();
-                    Toast.makeText(MainActivity.this, "Fail log in task, check your wifi connection and try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Fail log in task, check your wifi connection and try again", Toast.LENGTH_LONG).show();
                 }
             });
+
+
+
         }
     }
 }
