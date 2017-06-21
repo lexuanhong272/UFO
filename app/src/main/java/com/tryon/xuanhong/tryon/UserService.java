@@ -18,6 +18,7 @@ import retrofit2.http.Query;
 
 public interface UserService {
 
-
+    @GET("/api/headdata")
+    Call<Head> getHeadData(@Query("userid") int ID);
 
 }

@@ -48,11 +48,9 @@ public class LoaderObjects extends LoaderScenes {
 					addObject(axis);
 
 					try {
-						objFace = Object3DBuilder.loadV5SD("models/", "sculpted_model.obj");
+						objFace = Object3DBuilder.loadV5SD("Heads/", "ntloi95@gmail.com.obj");
 						objFace.setPosition(new float[] { 0f, 0f, 0f });
-						objFace.centerAndScale(3);
-
-
+						objFace.centerAndScale(2);
 						addObject(objFace);
 					} catch (Exception ex) {
 						errors.add(ex);
@@ -60,12 +58,8 @@ public class LoaderObjects extends LoaderScenes {
 
 
 					try {
-						objGlass = Object3DBuilder.loadV5SD("models/", "glasses3.obj");
-						//objGlass = Object3DBuilder.loadV5(parent.getAssets(), "models/", "glasses2.obj");
-
-						objGlass.centerAndScale(1.3f);
-						objGlass.setRotation(new float[] {0, 180, 0});
-						objGlass.setPosition(new float[] { 0f, 0.5f, -0.3f });
+						objGlass = Object3DBuilder.loadV5SD("models/", "glasses19.obj");
+						objGlass.setPosition(new float[] { 0f, 0.3f, -0.2f });
 						addObject(objGlass);
 					} catch (Exception ex) {
 						errors.add(ex);

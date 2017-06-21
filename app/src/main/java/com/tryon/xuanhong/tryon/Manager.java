@@ -60,5 +60,17 @@ public class Manager {
         return mEmailLoginService;
     }
 
+    private GlassesDataService mGlassesDataService;
+
+    public GlassesDataService getGlassesDataService() {
+        if (mGlassesDataService == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constant.HTTP.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mGlassesDataService = retrofit.create(GlassesDataService.class);
+        }
+        return mGlassesDataService;
+    }
 
 }

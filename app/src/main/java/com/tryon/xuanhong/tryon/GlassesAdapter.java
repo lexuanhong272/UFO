@@ -57,7 +57,6 @@ public class GlassesAdapter extends SearchAdapter<Glasses> {
         Bitmap bmp = BitmapFactory.decodeByteArray(arr, 0, arr.length);
         viewHolder.imgv_glasses.setImageBitmap(bmp);
 
-        //viewHolder.imgv_glasses.setImageDrawable(context.getResources().getDrawable(filteredContainer.get(position).getPoster()));
         return convertView;
     }
 

@@ -5,7 +5,7 @@ package com.tryon.xuanhong.tryon;
  */
 
 public class User {
-    String Id;
+    int Id;
     String Name;
     String Email;
     String Address;
@@ -14,11 +14,11 @@ public class User {
     String Password;
     String Avatar;
 
-    public String getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         Id = id;
     }
 

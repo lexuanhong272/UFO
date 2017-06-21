@@ -53,10 +53,6 @@ public class MainActivity extends Activity {
         btnLoginEmail = (Button) findViewById(R.id.btnLoginEmail);
 
         mManager = new Manager();
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-//        service = new Retrofit.Builder().baseUrl(BASE_URL).client(client).build().create(FaceLoginService.class);
 
         if (btnLoginFace != null) {
             btnLoginFace.setOnClickListener(new View.OnClickListener() {
@@ -127,12 +123,6 @@ public class MainActivity extends Activity {
                     if (response.isSuccessful()) {
                         Toast.makeText(MainActivity.this, "Log in successfully", Toast.LENGTH_SHORT).show();
                         mainUser = response.body();
-
-                        Log.d("mainUser", mainUser.toString());
-                        Log.d("mainUser", mainUser.Email);
-                        Log.d("mainUser", mainUser.Name);
-                        Log.d("mainUser", mainUser.Id);
-                        Log.d("mainUser", mainUser.Avatar);
 
                         byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
 

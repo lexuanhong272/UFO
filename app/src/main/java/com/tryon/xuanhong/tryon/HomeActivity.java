@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,9 @@ import android.widget.Toast;
 import com.tryon.xuanhong.tryon.object3D.views.ModelActivity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,15 +68,102 @@ public class HomeActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     NavigationView navigationView;
-    FrameLayout frameLayout;
 
     private Manager mManager;
     List<Glasses> userGlasses;
+
+    public static Head mHead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mManager = new Manager();
+
+
+        Call<Head> callDataHead = mManager.getUserService().getHeadData(mainUser.getId());
+        callDataHead.enqueue(new Callback<Head>() {
+            @Override
+            public void onResponse(Call<Head> call, Response<Head> response) {
+                if(response.isSuccessful()){
+                    mHead = response.body();
+
+                    File root = android.os.Environment.getExternalStorageDirectory();
+                    File dir = new File(root.getAbsolutePath() + "/Heads/");
+                    dir.mkdirs();
+
+                    byte[] OBJ = Base64.decode(mHead.getObj(), Base64.DEFAULT);
+
+                    File fileOBJ = new File(dir, "intel" + ".obj");
+                    try {
+                        FileOutputStream f = new FileOutputStream(fileOBJ);
+                        f.write(OBJ);
+                        //Toast.makeText(HomeActivity.this, "Saved OBJ " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                    }
+
+                    //Toast.makeText(HomeActivity.this, "aiop bbbbb", Toast.LENGTH_SHORT).show();
+
+
+                    byte[] MTL = Base64.decode(mHead.getMtl(), Base64.DEFAULT);
+
+                    File fileMTL = new File(dir, "intel" + ".mtl");
+                    try {
+                        FileOutputStream f = new FileOutputStream(fileMTL);
+                        f.write(MTL);
+                        //Toast.makeText(HomeActivity.this, "Saved MTL " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                    }
+
+                    byte[] PNG1 = Base64.decode(mHead.getPng1(), Base64.DEFAULT);
+
+                    File filePNG1 = new File(dir, "intel_face" + ".png");
+                    try {
+                        FileOutputStream f = new FileOutputStream(filePNG1);
+                        f.write(PNG1);
+                        //Toast.makeText(HomeActivity.this, "Saved PNG 1 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                    }
+
+                    byte[] PNG2 = Base64.decode(mHead.getPng2(), Base64.DEFAULT);
+                    Log.d("huhu", PNG2 + "");
+                    File filePNG2 = new File(dir, "intel_head" + ".png");
+                    try {
+                        FileOutputStream f = new FileOutputStream(filePNG2);
+                        f.write(PNG2);
+                        //Toast.makeText(HomeActivity.this, "Saved PNG2 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Head> call, Throwable t) {
+
+            }
+        });
 
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -99,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         setupView();
 
-        mManager = new Manager();
+
 
         final SearchAdapter mAdapter = new GlassesAdapter(mGlasses, this).registerFilter(Glasses.class, "Id").setIgnoreCase(true);
 
@@ -108,7 +199,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Glasses>> call, Response<List<Glasses>> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(HomeActivity.this, "Get glasses successfully", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomeActivity.this, "Get glasses successfully", Toast.LENGTH_SHORT).show();
                     userGlasses = response.body();
                     for(int i = 0; i < userGlasses.size(); i++) {
                         Glasses glasses = userGlasses.get(i);
@@ -127,7 +218,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Glasses>> call, Throwable t) {
-                Toast.makeText(HomeActivity.this, "Fail to get glasses", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Fail on get glasses", Toast.LENGTH_LONG).show();
                 return;
             }
         });
@@ -182,17 +273,9 @@ public class HomeActivity extends AppCompatActivity {
     TextView txt_email;
     ImageView imv_avatar;
 
-    String name;
-    String email;
-    byte[] arr;
-
-
     private void setupView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //toolbar.setLogo(R.drawable.ic_launcher);
-        //frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
