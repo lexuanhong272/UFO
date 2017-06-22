@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/welcomebg"
+    android:orientation="vertical"
+    tools:context="com.tryon.xuanhong.tryon.LoginEmailActivity">
+
+    <LinearLayout
+        android:id="@+id/linear01"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="220dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:width="150dp"
+            android:textSize="30dp"
+            android:textColor="#100000"
+            android:text="Email:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:hint="abc@def.com"
+            android:id="@+id/edtEmail"
+            android:textCursorDrawable="@null"
+            android:background="#d9ead2"
+            android:width="400dp"
+            android:pointerIcon="arrow"
+            android:layout_marginLeft="5dp"
+            android:textColor="#100000"
+            android:textSize="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:id="@+id/linear02"
+        android:layout_below="@+id/linear01"
+        android:layout_marginLeft="220dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:width="150dp"
+            android:textSize="30dp"
+            android:textColor="#100000"
+            android:text="Password:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:hint="123456"
+            android:id="@+id/edtPassword"
+            android:textCursorDrawable="@null"
+            android:backgroundTintMode="add"
+            android:inputType="textPassword"
+            android:background="#d9ead2"
+            android:width="400dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="#100000"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnLoginEmail"
+        android:layout_marginTop="70dp"
+        android:textSize="25dp"
+        android:background="#4558a7"
+        android:layout_below="@+id/linear02"
+        android:width="150dp"
+        android:textColor="#ffffff"
+        android:text="LOG IN"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:visibility="invisible"
+        android:id="@+id/btnBack"
+        android:layout_marginTop="50dp"
+        android:textSize="25dp"
+        android:background="#4558a7"
+        android:layout_below="@+id/btnLoginEmail"
+        android:width="150dp"
+        android:textColor="#ffffff"
+        android:text="BACK"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

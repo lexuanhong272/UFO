@@ -53,6 +53,7 @@ public class LoaderObjects extends LoaderScenes {
 					try {
 						objFace = Object3DBuilder.loadFromSD("Heads/", mainUser.getEmail() + ".obj");
 						objFace.setPosition(new float[] { 0f, 0f, 0f });
+						objFace.setRotation(new float[] {0f, 180f, 0f});
 						objFace.centerAndScale(2);
 						addObject(objFace);
 					} catch (Exception ex) {
@@ -62,7 +63,8 @@ public class LoaderObjects extends LoaderScenes {
 
 					try {
 						objGlass = Object3DBuilder.loadFromSD("Glasses/", IDGLASS + ".obj");
-						objGlass.setPosition(new float[] { 0f, 0.3f, -0.2f });
+						objGlass.setPosition(new float[] { 0f, 0.3f, 0.2f });
+						objGlass.setRotation(new float[] {0f, 180f, 0f});
 						addObject(objGlass);
 					} catch (Exception ex) {
 						errors.add(ex);

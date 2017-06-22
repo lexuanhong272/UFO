@@ -310,7 +310,16 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(HomeActivity.this, ModelActivity.class);
-                intent.putExtra("ID_Glasses", chose.getId());
+                intent.putExtra("Name", chose.getName());
+                intent.putExtra("Id", chose.getId());
+                intent.putExtra("Brigde", chose.getBridge());
+                intent.putExtra("Eye", chose.getEye());
+                intent.putExtra("Temple", chose.getTemple());
+                intent.putExtra("Price", chose.getPrice());
+                intent.putExtra("Producer", chose.getProducer());
+                intent.putExtra("Status", chose.getStatus());
+                intent.putExtra("Color", chose.getColor());
+
                 HomeActivity.this.startActivity(intent);
                 //Toast.makeText(Navigation.this, "DA SENT", Toast.LENGTH_SHORT).show();
             }

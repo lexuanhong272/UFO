@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tryon.xuanhong.tryon.GlassesData;
@@ -52,11 +53,10 @@ public class ModelActivity extends Activity {
 	Button btnXDOWN;
 	Button btnYUP, btnYDOWN, btnZUP, btnZDOWN;
 	Button btnRotateXUP, btnRotateXDOWN;
-	ImageButton btnBackFromModel;
 	ImageButton btnFavorite;
 
 	LinearLayout linearLayoutFavorite;
-	LinearLayout linearLayoutBackFromModel;
+	LinearLayout linearLayoutDetails;
 	boolean isPressed = true;
 	LinearLayout linearLayoutAddToCart;
     LinearLayout linearLayout;
@@ -65,6 +65,8 @@ public class ModelActivity extends Activity {
 	public static String colorUp = "#4F9C5F";
 	public static String colorDown = "#3C7896";
 	Manager mManager;
+
+	TextView txtDetails;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +86,31 @@ public class ModelActivity extends Activity {
 
 		handler = new Handler(getMainLooper());
 
-
 		Intent mychose = getIntent();
-		String contentIdGlass = mychose.getStringExtra("ID_Glasses");
-		Toast.makeText(ModelActivity.this, contentIdGlass, Toast.LENGTH_LONG).show();
+		String Id = mychose.getStringExtra("Id");
+		String Name = mychose.getStringExtra("Name");
+		String Price = mychose.getStringExtra("Price");
+		String Producer = mychose.getStringExtra("Producer");
+		String Temple = mychose.getStringExtra("Temple");
+		String Eye = mychose.getStringExtra("Eye");
+		String Bridge = mychose.getStringExtra("Bridge");
+		String Status = mychose.getStringExtra("Status");
+		String Color = mychose.getStringExtra("Color");
 
-		// Create a GLSurfaceView instance and set it
-		// as the ContentView for this Activity.
+		String details = "\n" + "   ID: " + Id + "\n\n" +
+		"   NAME: " + Name + "\n\n" + "   COLOR: " + Color + "\n\n" + "   PRICE: " + Price + "\n\n" + "   PRODUCER: " + Producer + "\n\n" +
+		"   TEMPLE: " + Temple + "\n\n" + "   EYE: " + Eye + "\n\n" + "   BRIDGE: " + Bridge + "\n\n" + "   STATUS: " + Status;
+
+
+		Toast.makeText(ModelActivity.this, Id + Price + Producer, Toast.LENGTH_LONG).show();
+
+		txtDetails = new TextView(this);
+		txtDetails.setBackgroundColor(android.graphics.Color.parseColor("#FFEFD5"));
+		txtDetails.setHeight(1100);
+		txtDetails.setWidth(600);
+		txtDetails.setText(details);
+		txtDetails.setTextSize(20);
+
 		gLView = new ModelSurfaceView(this);
 
 		btnFavorite = new ImageButton(this);
@@ -99,8 +119,6 @@ public class ModelActivity extends Activity {
 		btnFavorite.setScaleY(0.5f);
 
 		mManager = new Manager();
-
-
 
 		btnFavorite.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -168,7 +186,7 @@ public class ModelActivity extends Activity {
 
 
 		btnXUP = new Button(this);
-		btnXUP.setBackgroundColor(Color.parseColor(colorUp));
+		btnXUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 		btnXUP.setWidth(buttonWidth);
 
 		btnXUP.setText("X ++");
@@ -187,7 +205,7 @@ public class ModelActivity extends Activity {
 
 		btnXDOWN = new Button(this);
 		btnXDOWN.setText("X --");
-		btnXDOWN.setBackgroundColor(Color.parseColor(colorDown));
+		btnXDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 		btnXDOWN.setWidth(buttonWidth);
 
 		btnXDOWN.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +222,7 @@ public class ModelActivity extends Activity {
 
 		btnYUP = new Button(this);
 		btnYUP.setText("Y ++");
-		btnYUP.setBackgroundColor(Color.parseColor(colorUp));
+		btnYUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 		btnYUP.setWidth(buttonWidth);
 
 		btnYUP.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +241,7 @@ public class ModelActivity extends Activity {
 		btnYDOWN = new Button(this);
 		btnYDOWN.setText("Y --");
 		btnYDOWN.setWidth(buttonWidth);
-		btnYDOWN.setBackgroundColor(Color.parseColor(colorDown));
+		btnYDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 
 		btnYDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -240,7 +258,7 @@ public class ModelActivity extends Activity {
 		btnZUP = new Button(this);
 		btnZUP.setText("Z ++");
 		btnZUP.setWidth(buttonWidth);
-		btnZUP.setBackgroundColor(Color.parseColor(colorUp));
+		btnZUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 
 		btnZUP.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -257,7 +275,7 @@ public class ModelActivity extends Activity {
 		btnZDOWN = new Button(this);
 		btnZDOWN.setText("Z --");
 		btnZDOWN.setWidth(buttonWidth);
-		btnZDOWN.setBackgroundColor(Color.parseColor(colorDown));
+		btnZDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 
 		btnZDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -275,7 +293,7 @@ public class ModelActivity extends Activity {
 		btnRotateXUP = new Button(this);
 		btnRotateXUP.setText("Rotate X ++");
 		btnRotateXUP.setWidth(buttonWidth + 50);
-		btnRotateXUP.setBackgroundColor(Color.parseColor(colorUp));
+		btnRotateXUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 
 		btnRotateXUP.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -292,7 +310,7 @@ public class ModelActivity extends Activity {
 		btnRotateXDOWN = new Button(this);
 		btnRotateXDOWN.setText("Rotate X --");
 		btnRotateXDOWN.setWidth(buttonWidth + 50);
-		btnRotateXDOWN.setBackgroundColor(Color.parseColor(colorDown));
+		btnRotateXDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 
 		btnRotateXDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -309,6 +327,11 @@ public class ModelActivity extends Activity {
 		linearLayoutFavorite = new LinearLayout(this);
 		linearLayoutFavorite.setGravity(Gravity.TOP | Gravity.RIGHT);
 		linearLayoutFavorite.addView(btnFavorite);
+
+		linearLayoutDetails = new LinearLayout(this);
+		linearLayoutDetails.setGravity(Gravity.TOP | Gravity.LEFT);
+		linearLayoutDetails.addView(txtDetails);
+
 
 		linearLayoutAddToCart = new LinearLayout(this);
 		linearLayoutAddToCart.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
@@ -330,6 +353,7 @@ public class ModelActivity extends Activity {
 
 		setContentView(gLView);
 		addContentView(linearLayoutFavorite, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		addContentView(linearLayoutDetails, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         addContentView(linearLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		addContentView(linearLayoutAddToCart, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
