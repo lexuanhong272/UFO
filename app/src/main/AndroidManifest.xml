@@ -24,11 +24,12 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".object3D.views.ModelActivity"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".LoginEmailActivity"></activity>
+            android:screenOrientation="landscape" />
+        <activity android:name=".LoginEmailActivity" />
+        <activity android:name=".WishListActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.tryon.xuanhong.tryon.object3D.views;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,6 +61,9 @@ public class ModelActivity extends Activity {
 	LinearLayout linearLayoutAddToCart;
     LinearLayout linearLayout;
 
+	public static int buttonWidth = 210;
+	public static String colorUp = "#4F9C5F";
+	public static String colorDown = "#3C7896";
 	Manager mManager;
 
 	@Override
@@ -162,7 +166,11 @@ public class ModelActivity extends Activity {
 			}
 		});
 
+
 		btnXUP = new Button(this);
+		btnXUP.setBackgroundColor(Color.parseColor(colorUp));
+		btnXUP.setWidth(buttonWidth);
+
 		btnXUP.setText("X ++");
 		btnXUP.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -179,6 +187,9 @@ public class ModelActivity extends Activity {
 
 		btnXDOWN = new Button(this);
 		btnXDOWN.setText("X --");
+		btnXDOWN.setBackgroundColor(Color.parseColor(colorDown));
+		btnXDOWN.setWidth(buttonWidth);
+
 		btnXDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -193,6 +204,9 @@ public class ModelActivity extends Activity {
 
 		btnYUP = new Button(this);
 		btnYUP.setText("Y ++");
+		btnYUP.setBackgroundColor(Color.parseColor(colorUp));
+		btnYUP.setWidth(buttonWidth);
+
 		btnYUP.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -208,6 +222,9 @@ public class ModelActivity extends Activity {
 
 		btnYDOWN = new Button(this);
 		btnYDOWN.setText("Y --");
+		btnYDOWN.setWidth(buttonWidth);
+		btnYDOWN.setBackgroundColor(Color.parseColor(colorDown));
+
 		btnYDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -222,6 +239,9 @@ public class ModelActivity extends Activity {
 
 		btnZUP = new Button(this);
 		btnZUP.setText("Z ++");
+		btnZUP.setWidth(buttonWidth);
+		btnZUP.setBackgroundColor(Color.parseColor(colorUp));
+
 		btnZUP.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -236,6 +256,9 @@ public class ModelActivity extends Activity {
 
 		btnZDOWN = new Button(this);
 		btnZDOWN.setText("Z --");
+		btnZDOWN.setWidth(buttonWidth);
+		btnZDOWN.setBackgroundColor(Color.parseColor(colorDown));
+
 		btnZDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -251,6 +274,9 @@ public class ModelActivity extends Activity {
 
 		btnRotateXUP = new Button(this);
 		btnRotateXUP.setText("Rotate X ++");
+		btnRotateXUP.setWidth(buttonWidth + 50);
+		btnRotateXUP.setBackgroundColor(Color.parseColor(colorUp));
+
 		btnRotateXUP.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -265,6 +291,9 @@ public class ModelActivity extends Activity {
 
 		btnRotateXDOWN = new Button(this);
 		btnRotateXDOWN.setText("Rotate X --");
+		btnRotateXDOWN.setWidth(buttonWidth + 50);
+		btnRotateXDOWN.setBackgroundColor(Color.parseColor(colorDown));
+
 		btnRotateXDOWN.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -285,9 +314,6 @@ public class ModelActivity extends Activity {
 		linearLayoutAddToCart.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
 		linearLayoutAddToCart.setOrientation(LinearLayout.HORIZONTAL);
 
-		//linearLayoutAddToCart.addView(btnTakePicture);
-		//linearLayoutAddToCart.addView(btnAddToCart);
-
         linearLayout = new LinearLayout(this);
         linearLayout.setGravity(Gravity.BOTTOM | Gravity.LEFT);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -298,8 +324,8 @@ public class ModelActivity extends Activity {
 		linearLayout.addView(btnYDOWN);
 		linearLayout.addView(btnZUP);
 		linearLayout.addView(btnZDOWN);
-		linearLayout.addView(btnRotateXUP);
-		linearLayout.addView(btnRotateXDOWN);
+		linearLayoutAddToCart.addView(btnRotateXUP);
+		linearLayoutAddToCart.addView(btnRotateXDOWN);
 
 
 		setContentView(gLView);

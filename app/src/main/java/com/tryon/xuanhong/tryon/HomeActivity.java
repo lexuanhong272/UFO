@@ -221,6 +221,15 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "Fail on get glasses", Toast.LENGTH_LONG).show();
                 return;
             }
+
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                selectDrawerItem(menuItem);
+                return true;
+            }
         });
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -307,6 +316,50 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_home:
+                //Toast.makeText(Navigation.this, "Click on Home", Toast.LENGTH_SHORT).show();
+//                HomeActivity.this.startActivity(new Intent(HomeActivity.this.getApplicationContext(), HomeActivity.class));
+//                HomeActivity.this.finish();
+                break;
+            case R.id.drawer_wishlist:
+                //Toast.makeText(Navigation.this, "Click on Log out", Toast.LENGTH_SHORT).show();
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this.getApplicationContext(), WishListActivity.class));
+                HomeActivity.this.finish();
+                break;
+            case R.id.drawer_logout:
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Log out")
+                        .setMessage("Are you sure you want to log out?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                HomeActivity.this.startActivity(new Intent(HomeActivity.this.getApplicationContext(), MainActivity.class));
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                break;
+        }
+
+        try {
+            //Fragment fragment = (Fragment) fragmentClass.newInstance();
+            //fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //setToolbarElevation(specialToolbarBehaviour);
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        drawerLayout.closeDrawers();
     }
 
     public void onBackPressed() {
