@@ -72,7 +72,9 @@ public class HomeActivity extends AppCompatActivity {
     private Manager mManager;
     List<Glasses> userGlasses;
 
+    public static GlassesData mGlassesData;
     public static Head mHead;
+    public static String IDGLASS = "glasses1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     byte[] OBJ = Base64.decode(mHead.getObj(), Base64.DEFAULT);
 
-                    File fileOBJ = new File(dir, "intel" + ".obj");
+                    File fileOBJ = new File(dir, mainUser.getEmail() + ".obj");
                     try {
                         FileOutputStream f = new FileOutputStream(fileOBJ);
                         f.write(OBJ);
@@ -108,12 +110,10 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
                     }
 
-                    //Toast.makeText(HomeActivity.this, "aiop bbbbb", Toast.LENGTH_SHORT).show();
-
 
                     byte[] MTL = Base64.decode(mHead.getMtl(), Base64.DEFAULT);
 
-                    File fileMTL = new File(dir, "intel" + ".mtl");
+                    File fileMTL = new File(dir, mainUser.getEmail() + ".mtl");
                     try {
                         FileOutputStream f = new FileOutputStream(fileMTL);
                         f.write(MTL);
@@ -128,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     byte[] PNG1 = Base64.decode(mHead.getPng1(), Base64.DEFAULT);
 
-                    File filePNG1 = new File(dir, "intel_face" + ".png");
+                    File filePNG1 = new File(dir, mainUser.getEmail() + "_face.png");
                     try {
                         FileOutputStream f = new FileOutputStream(filePNG1);
                         f.write(PNG1);
@@ -142,12 +142,12 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     byte[] PNG2 = Base64.decode(mHead.getPng2(), Base64.DEFAULT);
-                    Log.d("huhu", PNG2 + "");
-                    File filePNG2 = new File(dir, "intel_head" + ".png");
+
+                    File filePNG2 = new File(dir, mainUser.getEmail() + "_hair.png");
                     try {
                         FileOutputStream f = new FileOutputStream(filePNG2);
                         f.write(PNG2);
-                        //Toast.makeText(HomeActivity.this, "Saved PNG2 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "Saved data head success " + mainUser.getId(), Toast.LENGTH_SHORT).show();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
@@ -243,6 +243,63 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Glasses chose = (Glasses) gridView.getItemAtPosition(position);
+                IDGLASS = chose.getId();
+
+                File x = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Glasses/" + IDGLASS + ".obj");
+
+                if(x.exists() == false){
+                    Call<GlassesData> callGlassesData = mManager.getGlassesDataService().getGlassesData(IDGLASS);
+
+                    callGlassesData.enqueue(new Callback<GlassesData>() {
+                        @Override
+                        public void onResponse(Call<GlassesData> call, Response<GlassesData> response) {
+                            mGlassesData = response.body();
+                            File root = android.os.Environment.getExternalStorageDirectory();
+                            File dir = new File(root.getAbsolutePath() + "/Glasses/");
+                            dir.mkdirs();
+                            byte[] OBJ = Base64.decode(mGlassesData.getObj(), Base64.DEFAULT);
+                            File file1 = new File(dir, IDGLASS + ".obj");
+                            try {
+                                FileOutputStream f = new FileOutputStream(file1);
+
+                                f.write(OBJ);
+                                //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                                //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                            }
+
+                            byte[] MTL = Base64.decode(mGlassesData.getMtl(), Base64.DEFAULT);
+
+                            File file2 = new File(dir, IDGLASS + ".mtl");
+                            try {
+                                FileOutputStream f = new FileOutputStream(file2);
+
+                                f.write(MTL);
+                                //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                                //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                            }
+
+                            Toast.makeText(HomeActivity.this, "Get glassses suuuuccccesss " + IDGLASS, Toast.LENGTH_LONG).show();
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<GlassesData> call, Throwable t) {
+                            Toast.makeText(HomeActivity.this, "Faillllll", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }
+
                 Intent intent = new Intent(HomeActivity.this, ModelActivity.class);
                 intent.putExtra("ID_Glasses", chose.getId());
                 HomeActivity.this.startActivity(intent);

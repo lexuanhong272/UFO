@@ -12,6 +12,9 @@ import com.tryon.xuanhong.tryon.object3D.views.ModelActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tryon.xuanhong.tryon.HomeActivity.IDGLASS;
+import static com.tryon.xuanhong.tryon.MainActivity.mainUser;
+
 public class LoaderObjects extends LoaderScenes {
 
 	public LoaderObjects(ModelActivity modelActivity) {
@@ -48,7 +51,7 @@ public class LoaderObjects extends LoaderScenes {
 					addObject(axis);
 
 					try {
-						objFace = Object3DBuilder.loadV5SD("Heads/", "ntloi95@gmail.com.obj");
+						objFace = Object3DBuilder.loadFromSD("Heads/", mainUser.getEmail() + ".obj");
 						objFace.setPosition(new float[] { 0f, 0f, 0f });
 						objFace.centerAndScale(2);
 						addObject(objFace);
@@ -58,7 +61,7 @@ public class LoaderObjects extends LoaderScenes {
 
 
 					try {
-						objGlass = Object3DBuilder.loadV5SD("models/", "glasses19.obj");
+						objGlass = Object3DBuilder.loadFromSD("Glasses/", IDGLASS + ".obj");
 						objGlass.setPosition(new float[] { 0f, 0.3f, -0.2f });
 						addObject(objGlass);
 					} catch (Exception ex) {

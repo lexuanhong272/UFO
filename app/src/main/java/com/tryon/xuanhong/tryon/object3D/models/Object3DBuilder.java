@@ -371,7 +371,7 @@ public final class Object3DBuilder {
 	Object3DData data3D;
 
 
-	public static Object3DData loadV5SD(String assetDir, String assetFilename) {
+	public static Object3DData loadFromSD(String assetDir, String assetFilename) {
 		try {
 			String path = Environment.getExternalStorageDirectory()+"/" + assetDir + "/" + assetFilename;
 			InputStream is = new FileInputStream(path);
@@ -401,7 +401,7 @@ public final class Object3DBuilder {
 	}
 
 
-	public static Object3DData loadV5(AssetManager assets, String assetDir, String assetFilename) {
+	public static Object3DData loadFromAsset(AssetManager assets, String assetDir, String assetFilename) {
 		try {
 			InputStream is = assets.open(assetDir + assetFilename);
 			Log.d("isss", is + "");

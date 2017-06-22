@@ -73,4 +73,17 @@ public class Manager {
         return mGlassesDataService;
     }
 
+    private WishlistService mWishlistService;
+
+    public WishlistService getWishlistService() {
+        if (mWishlistService == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constant.HTTP.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mWishlistService = retrofit.create(WishlistService.class);
+        }
+        return mWishlistService;
+    }
+
 }

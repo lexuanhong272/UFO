@@ -18,12 +18,21 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.tryon.xuanhong.tryon.GlassesData;
+import com.tryon.xuanhong.tryon.Manager;
 import com.tryon.xuanhong.tryon.R;
 import com.tryon.xuanhong.tryon.object3D.services.LoaderObjects;
 import com.tryon.xuanhong.tryon.object3D.services.LoaderScenes;
 import com.tryon.xuanhong.tryon.object3D.utils.Utils;
 
 import java.io.File;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.tryon.xuanhong.tryon.HomeActivity.IDGLASS;
+import static com.tryon.xuanhong.tryon.MainActivity.mainUser;
 
 public class ModelActivity extends Activity {
 
@@ -50,6 +59,8 @@ public class ModelActivity extends Activity {
 	boolean isPressed = true;
 	LinearLayout linearLayoutAddToCart;
     LinearLayout linearLayout;
+
+	Manager mManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +94,9 @@ public class ModelActivity extends Activity {
 		btnFavorite.setScaleX(0.5f);
 		btnFavorite.setScaleY(0.5f);
 
+		mManager = new Manager();
+
+
 
 		btnFavorite.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -91,10 +105,58 @@ public class ModelActivity extends Activity {
 					v.setBackgroundResource(R.drawable.heartfull);
 					Toast.makeText(ModelActivity.this, "Add to Wish List!", Toast.LENGTH_SHORT).show();
 
+
+					Call<Integer> callAddWL = mManager.getWishlistService().addWishList(mainUser.getId(), IDGLASS);
+
+					callAddWL.enqueue(new Callback<Integer>() {
+						@Override
+						public void onResponse(Call<Integer> call, Response<Integer> response) {
+							if(response.isSuccessful()){
+								Toast.makeText(ModelActivity.this, mainUser.getId() + " == " +IDGLASS, Toast.LENGTH_LONG).show();
+
+							}
+							else {
+								Toast.makeText(ModelActivity.this, "FAILL", Toast.LENGTH_LONG).show();
+
+							}
+						}
+
+						@Override
+						public void onFailure(Call<Integer> call, Throwable t) {
+							Toast.makeText(ModelActivity.this, "faill", Toast.LENGTH_LONG).show();
+
+						}
+					});
+					//Call<GlassesData> callGlassesData = mManager.getGlassesDataService().getGlassesData(IDGLASS);
+
+
 				}else{
 					v.setBackgroundResource(R.drawable.heartempty);
 					Toast.makeText(ModelActivity.this, "Remove from Wish List!", Toast.LENGTH_SHORT).show();
-				}
+
+					Call<Integer> callRemoveWL = mManager.getWishlistService().removeWishList(mainUser.getId(), IDGLASS);
+
+					callRemoveWL.enqueue(new Callback<Integer>() {
+						@Override
+						public void onResponse(Call<Integer> call, Response<Integer> response) {
+							if(response.isSuccessful()){
+								Toast.makeText(ModelActivity.this, mainUser.getId() + " == " +IDGLASS, Toast.LENGTH_LONG).show();
+
+							}
+							else {
+								Toast.makeText(ModelActivity.this, "FAILL", Toast.LENGTH_LONG).show();
+
+							}
+						}
+
+						@Override
+						public void onFailure(Call<Integer> call, Throwable t) {
+							Toast.makeText(ModelActivity.this, "faill", Toast.LENGTH_LONG).show();
+
+						}
+					});
+
+                }
 				isPressed = !isPressed; // reverse
 
 			}
