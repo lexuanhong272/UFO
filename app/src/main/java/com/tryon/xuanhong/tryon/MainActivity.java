@@ -1,10 +1,12 @@
 package com.tryon.xuanhong.tryon;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -47,6 +49,7 @@ public class MainActivity extends Activity {
     public static User mainUser;
     private Manager mManager;
 
+    File file22;
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -82,8 +85,8 @@ public class MainActivity extends Activity {
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                         try {
-                            File file = File.createTempFile("temp", ".png", storageDir);
-                            mUriPhotoTaken = Uri.fromFile(file);
+                            file22 = File.createTempFile("temp", ".png", storageDir);
+                            mUriPhotoTaken = Uri.fromFile(file22);
                             intent.putExtra("data", mUriPhotoTaken);
                             startActivityForResult(intent, PICK_IMAGE);
                         } catch (IOException e) {
@@ -106,6 +109,8 @@ public class MainActivity extends Activity {
 
     }
 
+    File fileload;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -115,13 +120,13 @@ public class MainActivity extends Activity {
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
             OutputStream outStream = null;
             String filename = "temp";
-            File file = new File(extStorageDirectory, filename + ".png");
-            if (file.exists()) {
-                file.delete();
-                file = new File(extStorageDirectory, filename + ".png");
+            fileload = new File(extStorageDirectory, filename + ".png");
+            if (fileload.exists()) {
+                fileload.delete();
+                fileload = new File(extStorageDirectory, filename + ".png");
             }
             try {
-                outStream = new FileOutputStream(file);
+                outStream = new FileOutputStream(fileload);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
                 outStream.flush();
                 outStream.close();
@@ -129,48 +134,63 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
 
-            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
 
-            Call<User> callUser = mManager.getFaceLoginService().faceLogin(body, name);
+            new AsyncTask<Void, Void, Void>() {
 
-
-            callUser.enqueue(new Callback<User>() {
+                ProgressDialog dialog = new ProgressDialog(MainActivity.this);
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Log in successfully", Toast.LENGTH_SHORT).show();
-                        mainUser = response.body();
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                            dialog.setCancelable(false);
+                            dialog.setMessage("meo meo meo, program is loading GLASSES ");
+                            dialog.show();
+                    Toast.makeText(MainActivity.this, "Please wait a few senconds while authentication", Toast.LENGTH_LONG).show();
+                }
 
-                        byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
+                @Override
+                protected Void doInBackground(Void... params) {
 
-                        File root1 = android.os.Environment.getExternalStorageDirectory();
-                        File dir1 = new File(root1.getAbsolutePath() + "/DCIM/");
-                        dir1.mkdirs();
-                        File file1 = new File(dir1, "mainUser" + ".jpg");
-                        try {
-                            FileOutputStream f = new FileOutputStream(file1);
+                    RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), fileload);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("upload", fileload.getName(), reqFile);
+                    RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
-                            f.write(bytearrayMTL);
-                            //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                        }
 
-                        MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
-                        MainActivity.this.finish();
+                    Call<User> callUser = mManager.getFaceLoginService().faceLogin(body, name);
+                    callUser.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "Log in successfully", Toast.LENGTH_SHORT).show();
+                                mainUser = response.body();
 
-                    }
+                                byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
 
-                    else {
-                        Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
-                    }
+                                File root1 = android.os.Environment.getExternalStorageDirectory();
+                                File dir1 = new File(root1.getAbsolutePath());
+                                dir1.mkdirs();
+                                File file1 = new File(dir1, "temp" + ".png");
+                                try {
+                                    FileOutputStream f = new FileOutputStream(file1);
+
+                                    f.write(bytearrayMTL);
+                                    //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                    //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                }
+
+                                MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
+                                MainActivity.this.finish();
+
+                            }
+
+                            else {
+                                Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                            }
 //                    int sc = response.code();
 //                    switch (sc) {
 //                        case 404:
@@ -179,14 +199,34 @@ public class MainActivity extends Activity {
 //                            break;
 //                    }
 
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            //Toast.makeText(MainActivity.this, "SERVER NOT RESPONSE OR TIME CONSUMING", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+
+
+                    return null;
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    //Toast.makeText(MainActivity.this, "SERVER NOT RESPONSE OR TIME CONSUMING", Toast.LENGTH_LONG).show();
-                    Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                protected void onPostExecute(Void result) {
+                    super.onPostExecute(result);
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    //Toast.makeText(MainActivity.this, "MEO HIHI lala", Toast.LENGTH_LONG).show();
+
+
                 }
-            });
+
+            }.execute();
+
 
         }
     }

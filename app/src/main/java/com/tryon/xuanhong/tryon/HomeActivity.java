@@ -193,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         File root = android.os.Environment.getExternalStorageDirectory();
-        File img = new File(root.getAbsolutePath() + "/DCIM/mainUser.jpg");
+        File img = new File(root.getAbsolutePath() + "/temp.png");
 
         if(img.exists()){
 
