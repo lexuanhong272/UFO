@@ -42,7 +42,7 @@ public class WishListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wish_list);
 
-        Toast.makeText(WishListActivity.this, "alo", Toast.LENGTH_SHORT).show();
+
         gv = (GridView) findViewById(R.id.grid_view);
 
 
@@ -52,55 +52,42 @@ public class WishListActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                dialog.setCancelable(false);
-                dialog.setMessage("gau gau gau, program is loading GLASSES " + IDGLASS);
-                dialog.show();
+                //Toast.makeText(WishListActivity.this, "Please wait a few senconds while load wish list", Toast.LENGTH_LONG).show();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
 
                 Call<List<Glasses>> call = m.getWishlistService().getWishList(mainUser.getId());
-
-
                 call.enqueue(new Callback<List<Glasses>>() {
                     @Override
                     public void onResponse(Call<List<Glasses>> call, Response<List<Glasses>> response) {
-                        temp = response.body();
-                        for (int i = 0; i < temp.size(); i++) {
+                        if(response.isSuccessful()){
+                            temp = response.body();
+                            for (int i = 0; i < temp.size(); i++) {
+                                favo.add(temp.get(i));
+                                //Toast.makeText(WishListActivity.this, "666 " + i, Toast.LENGTH_SHORT).show();
+                            }
+                            GlassesFullAdapter adapterFa = new GlassesFullAdapter(WishListActivity.this, R.layout.row_glasses_full, favo);
+                            gv.setAdapter(adapterFa);
+                        }
+                        else {
+                            Toast.makeText(WishListActivity.this, "Fail on get wish list", Toast.LENGTH_LONG).show();
 
-                            favo.add(temp.get(i));
-                            Toast.makeText(WishListActivity.this, "666 " + i, Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Glasses>> call, Throwable t) {
-                        Toast.makeText(WishListActivity.this, "fail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(WishListActivity.this, "Fail on get wish list", Toast.LENGTH_LONG).show();
 
                     }
                 });
                 return null;
             }
 
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    Toast.makeText(WishListActivity.this, "HERE", Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-
         }.execute();
 
-
-        Toast.makeText(WishListActivity.this, favo.size() + " size", Toast.LENGTH_LONG).show();
-
-        GlassesFullAdapter adapterFa = new GlassesFullAdapter(WishListActivity.this, R.layout.row_glasses_full, favo);
-        gv.setAdapter(adapterFa);
 
     }
 

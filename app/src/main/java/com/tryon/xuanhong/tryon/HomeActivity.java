@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     private Manager mManager;
     List<Glasses> userGlasses;
 
-
+    File aa;
     public static boolean downHead = false;
     public static GlassesData mGlassesData;
     public static Head mHead;
@@ -89,99 +89,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         mManager = new Manager();
-
-        File aa = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Heads/" + mainUser.getEmail() + ".obj");
-
-        if(aa.exists() == false){
-
-            Call<Head> callDataHead = mManager.getUserService().getHeadData(mainUser.getId());
-            callDataHead.enqueue(new Callback<Head>() {
-                @Override
-                public void onResponse(Call<Head> call, Response<Head> response) {
-                    if(response.isSuccessful()){
-                        mHead = response.body();
-
-
-                        File root = android.os.Environment.getExternalStorageDirectory();
-                        File dir = new File(root.getAbsolutePath() + "/Heads/");
-                        dir.mkdirs();
-                        byte[] OBJ = Base64.decode(mHead.getObj(), Base64.DEFAULT);
-
-                        File fileOBJ = new File(dir, mainUser.getEmail() + ".obj");
-                        try {
-                            FileOutputStream f = new FileOutputStream(fileOBJ);
-                            f.write(OBJ);
-                            //Toast.makeText(HomeActivity.this, "Saved OBJ " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                        }
-
-
-                        byte[] MTL = Base64.decode(mHead.getMtl(), Base64.DEFAULT);
-
-                        File fileMTL = new File(dir, mainUser.getEmail() + ".mtl");
-                        try {
-                            FileOutputStream f = new FileOutputStream(fileMTL);
-                            f.write(MTL);
-                            //Toast.makeText(HomeActivity.this, "Saved MTL " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                        }
-
-                        byte[] PNG1 = Base64.decode(mHead.getPng1(), Base64.DEFAULT);
-
-                        File filePNG1 = new File(dir, mainUser.getEmail() + "_face.png");
-                        try {
-                            FileOutputStream f = new FileOutputStream(filePNG1);
-                            f.write(PNG1);
-                            //Toast.makeText(HomeActivity.this, "Saved PNG 1 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                        }
-
-                        byte[] PNG2 = Base64.decode(mHead.getPng2(), Base64.DEFAULT);
-
-                        File filePNG2 = new File(dir, mainUser.getEmail() + "_hair.png");
-                        try {
-                            FileOutputStream f = new FileOutputStream(filePNG2);
-                            f.write(PNG2);
-                            downHead = true;
-                            Toast.makeText(HomeActivity.this, "Saved new head success " + mainUser.getId(), Toast.LENGTH_LONG).show();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                        }
-                        downHead = true;
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Head> call, Throwable t) {
-                    downHead = false;
-                }
-            });
-
-        }
-        else {
-            Toast.makeText(HomeActivity.this, "OLD HEAD", Toast.LENGTH_LONG).show();
-        }
-
-
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         View header = navigationView.getHeaderView(0);
@@ -216,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Glasses>> call, Response<List<Glasses>> response) {
                 if(response.isSuccessful()){
-                    //Toast.makeText(HomeActivity.this, "Get glasses successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, "Get glasses list successfully", Toast.LENGTH_SHORT).show();
                     userGlasses = response.body();
                     for(int i = 0; i < userGlasses.size(); i++) {
                         Glasses glasses = userGlasses.get(i);

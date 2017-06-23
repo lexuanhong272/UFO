@@ -138,14 +138,10 @@ public class MainActivity extends Activity {
 
             new AsyncTask<Void, Void, Void>() {
 
-                ProgressDialog dialog = new ProgressDialog(MainActivity.this);
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                            dialog.setCancelable(false);
-                            dialog.setMessage("meo meo meo, program is loading GLASSES ");
-                            dialog.show();
-                    Toast.makeText(MainActivity.this, "Please wait a few senconds while authentication", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Please wait a few seconds while authenticating", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -161,7 +157,7 @@ public class MainActivity extends Activity {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             if (response.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Log in successfully", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(MainActivity.this, "Log in successfully", Toast.LENGTH_SHORT).show();
                                 mainUser = response.body();
 
                                 byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
@@ -183,13 +179,113 @@ public class MainActivity extends Activity {
                                     //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
                                 }
 
-                                MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
-                                MainActivity.this.finish();
 
+                                File aa = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Heads/" + mainUser.getEmail() + ".obj");
+
+                                if(aa.exists() == false){
+
+                                    Call<Head> callDataHead = mManager.getUserService().getHeadData(mainUser.getId());
+                                    callDataHead.enqueue(new Callback<Head>() {
+                                        @Override
+                                        public void onResponse(Call<Head> call, Response<Head> response) {
+                                            if(response.isSuccessful()){
+                                                Head mHead = response.body();
+
+                                                File root = android.os.Environment.getExternalStorageDirectory();
+                                                File dir = new File(root.getAbsolutePath() + "/Heads/");
+                                                dir.mkdirs();
+                                                byte[] OBJ = Base64.decode(mHead.getObj(), Base64.DEFAULT);
+
+                                                File fileOBJ = new File(dir, mainUser.getEmail() + ".obj");
+                                                try {
+                                                    FileOutputStream f = new FileOutputStream(fileOBJ);
+                                                    f.write(OBJ);
+                                                    //Toast.makeText(HomeActivity.this, "Saved OBJ " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                                                } catch (FileNotFoundException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                                }
+
+
+                                                byte[] MTL = Base64.decode(mHead.getMtl(), Base64.DEFAULT);
+
+                                                File fileMTL = new File(dir, mainUser.getEmail() + ".mtl");
+                                                try {
+                                                    FileOutputStream f = new FileOutputStream(fileMTL);
+                                                    f.write(MTL);
+                                                    //Toast.makeText(HomeActivity.this, "Saved MTL " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                                                } catch (FileNotFoundException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                byte[] PNG1 = Base64.decode(mHead.getPng1(), Base64.DEFAULT);
+
+                                                File filePNG1 = new File(dir, mainUser.getEmail() + "_face.png");
+                                                try {
+                                                    FileOutputStream f = new FileOutputStream(filePNG1);
+                                                    f.write(PNG1);
+                                                    //Toast.makeText(HomeActivity.this, "Saved PNG 1 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                                                } catch (FileNotFoundException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                byte[] PNG2 = Base64.decode(mHead.getPng2(), Base64.DEFAULT);
+
+                                                File filePNG2 = new File(dir, mainUser.getEmail() + "_hair.png");
+                                                try {
+                                                    FileOutputStream f = new FileOutputStream(filePNG2);
+                                                    f.write(PNG2);
+
+
+                                                } catch (FileNotFoundException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                    //Toast.makeText(LoginEmailActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                                }
+                                                Toast.makeText(MainActivity.this, "New head cached " + mainUser.getId(), Toast.LENGTH_LONG).show();
+                                                Toast.makeText(MainActivity.this, "Log in success", Toast.LENGTH_SHORT).show();
+                                                MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
+                                                MainActivity.this.finish();
+
+                                            }
+                                            else {
+                                                Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(MainActivity.this, "PLEASE SIGN UP OR TRY AGAIN", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Head> call, Throwable t) {
+                                            Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(MainActivity.this, "PLEASE SIGN UP OR TRY AGAIN", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                                else {
+                                    Toast.makeText(MainActivity.this, "Old head", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, "Log in success", Toast.LENGTH_SHORT).show();
+                                    MainActivity.this.startActivity(new Intent(MainActivity.this.getApplicationContext(), HomeActivity.class));
+                                    MainActivity.this.finish();
+                                }
                             }
 
                             else {
                                 Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, "PLEASE SIGN UP OR TRY AGAIN", Toast.LENGTH_LONG).show();
                             }
 //                    int sc = response.code();
 //                    switch (sc) {
@@ -205,6 +301,7 @@ public class MainActivity extends Activity {
                         public void onFailure(Call<User> call, Throwable t) {
                             //Toast.makeText(MainActivity.this, "SERVER NOT RESPONSE OR TIME CONSUMING", Toast.LENGTH_LONG).show();
                             Toast.makeText(MainActivity.this, "LOG IN FAIL", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "PLEASE SIGN UP OR TRY AGAIN", Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -214,16 +311,7 @@ public class MainActivity extends Activity {
                     return null;
                 }
 
-                @Override
-                protected void onPostExecute(Void result) {
-                    super.onPostExecute(result);
-                    if (dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
-                    //Toast.makeText(MainActivity.this, "MEO HIHI lala", Toast.LENGTH_LONG).show();
 
-
-                }
 
             }.execute();
 
