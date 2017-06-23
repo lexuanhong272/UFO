@@ -135,16 +135,16 @@ public class ModelActivity extends Activity {
 		String Color = mychose.getStringExtra("Color");
 
 		String details =
-		"\n   NAME: " + Name + "\n\n" + "   COLOR: " + Color + "\n\n" + "   PRICE: " + Price + "\n\n" + "   PRODUCER: " + Producer + "\n\n" +
-		"   STATUS: " + Status;
+		"\n\n       " + Name + "\n\n" + "       " + Price + " $" + "\n\n" + "       " + Producer + "\n\n" +
+		"       " + Status;
 
 
 		Toast.makeText(ModelActivity.this, Id + Price + Producer, Toast.LENGTH_LONG).show();
 
 		txtDetails = new TextView(this);
-		txtDetails.setBackgroundColor(android.graphics.Color.parseColor("#FFEFD5"));
-		txtDetails.setHeight(700);
-		txtDetails.setWidth(450);
+		//txtDetails.setBackgroundColor(android.graphics.Color.parseColor("#FFEFD5"));
+		//txtDetails.setHeight(700);
+		//txtDetails.setWidth(450);
 		txtDetails.setText(details);
 		txtDetails.setTextSize(18);
 
@@ -219,9 +219,16 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posBBBBB += radient;
-				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
-				//Toast.makeText(ModelActivity.this, "X ++ ^^", Toast.LENGTH_SHORT).show();
+
+                float tem = posBBBBB + radient;
+                if(tem <= 1.5f){
+                    posBBBBB += radient;
+                    LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
+                }
+                else{
+                    Toast.makeText(ModelActivity.this, "Vuot qua gioi han cho phep ^^ ", Toast.LENGTH_LONG).show();
+                }
+
 			}
 		});
 
@@ -237,9 +244,17 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posBBBBB -= radient;
-				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
-				//Toast.makeText(ModelActivity.this, "X -- ^^", Toast.LENGTH_SHORT).show();
+
+				float tem = posBBBBB - radient;
+				if(tem >= -1.5f){
+					posBBBBB -= radient;
+					LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
+				}
+				else{
+					Toast.makeText(ModelActivity.this, "Vuot qua gioi han cho phep ^^ ", Toast.LENGTH_LONG).show();
+				}
+
+
 			}
 		});
 
@@ -254,9 +269,17 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posNNNNN += radient;
-				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
-				//Toast.makeText(ModelActivity.this, "Y ++ ^^", Toast.LENGTH_SHORT).show();
+
+				float tem = posNNNNN + radient;
+				if(tem <= 1.5f){
+					posNNNNN += radient;
+					LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
+				}
+				else{
+					Toast.makeText(ModelActivity.this, "Vuot qua gioi han cho phep ^^ ", Toast.LENGTH_LONG).show();
+				}
+
+
 			}
 		});
 
@@ -272,9 +295,15 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posNNNNN -= radient;
-				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
-				//Toast.makeText(ModelActivity.this, "Y -- ^^", Toast.LENGTH_SHORT).show();
+
+				float tem = posNNNNN - radient;
+				if(tem >= -1.5f){
+					posNNNNN -= radient;
+					LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
+				}
+				else{
+					Toast.makeText(ModelActivity.this, "Vuot qua gioi han cho phep ^^ ", Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 
@@ -289,9 +318,16 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posMMMMM += radient;
-				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
-				//Toast.makeText(ModelActivity.this, "Z ++ ^^", Toast.LENGTH_SHORT).show();
+
+				float tem = posMMMMM + radient;
+				if(tem <= 1.5f){
+					posMMMMM += radient;
+					LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
+				}
+				else{
+					Toast.makeText(ModelActivity.this, "Vuot qua gioi han cho phep ^^ ", Toast.LENGTH_LONG).show();
+				}
+
 			}
 		});
 
@@ -306,9 +342,16 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posMMMMM -= radient;
-				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
-				//Toast.makeText(ModelActivity.this, "Z -- ^^", Toast.LENGTH_SHORT).show();
+
+				float tem = posMMMMM - radient;
+				if(tem >= -1.5f){
+					posMMMMM -= radient;
+					LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
+				}
+				else{
+					Toast.makeText(ModelActivity.this, "Vuot qua gioi han cho phep ^^ ", Toast.LENGTH_LONG).show();
+				}
+
 			}
 		});
 
@@ -323,7 +366,7 @@ public class ModelActivity extends Activity {
 			public void onClick(View v) {
 				float scale1[] = new float[3];
 				scale1 = LoaderObjects.objGlass.getRotation();
-				scale1[0] += radient* 100 ;
+				scale1[0] += radient * 100 ;
 				LoaderObjects.objGlass.getRotationZ();
 				LoaderObjects.objGlass.setRotation(scale1);
 			}

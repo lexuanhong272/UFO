@@ -6,7 +6,7 @@ package com.tryon.xuanhong.tryon;
 
 public class Constant {
     public static final class HTTP {
-        public static final String BASE_URL = "http://192.168.1.26:1310";
+        public static final String BASE_URL = "http://192.168.100.2:1310";
 
     }
 }

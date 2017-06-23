@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
                         byte[] bytearrayMTL = Base64.decode(mainUser.getAvatar(), Base64.DEFAULT);
 
                         File root1 = android.os.Environment.getExternalStorageDirectory();
-                        File dir1 = new File(root1.getAbsolutePath() + "/DCIM/AVATAR/");
+                        File dir1 = new File(root1.getAbsolutePath() + "/DCIM/");
                         dir1.mkdirs();
                         File file1 = new File(dir1, "mainUser" + ".jpg");
                         try {

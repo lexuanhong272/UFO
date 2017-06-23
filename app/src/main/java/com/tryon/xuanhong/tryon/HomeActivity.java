@@ -1,12 +1,14 @@
 package com.tryon.xuanhong.tryon;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -73,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     List<Glasses> userGlasses;
 
 
+    public static boolean downHead = false;
     public static GlassesData mGlassesData;
     public static Head mHead;
     public static String IDGLASS = "glasses1";
@@ -87,87 +90,97 @@ public class HomeActivity extends AppCompatActivity {
 
         mManager = new Manager();
 
+        File aa = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Heads/" + mainUser.getEmail() + ".obj");
 
-        Call<Head> callDataHead = mManager.getUserService().getHeadData(mainUser.getId());
-        callDataHead.enqueue(new Callback<Head>() {
-            @Override
-            public void onResponse(Call<Head> call, Response<Head> response) {
-                if(response.isSuccessful()){
-                    mHead = response.body();
+        if(aa.exists() == false){
 
-                    File root = android.os.Environment.getExternalStorageDirectory();
-                    File dir = new File(root.getAbsolutePath() + "/Heads/");
-                    dir.mkdirs();
+            Call<Head> callDataHead = mManager.getUserService().getHeadData(mainUser.getId());
+            callDataHead.enqueue(new Callback<Head>() {
+                @Override
+                public void onResponse(Call<Head> call, Response<Head> response) {
+                    if(response.isSuccessful()){
+                        mHead = response.body();
 
-                    byte[] OBJ = Base64.decode(mHead.getObj(), Base64.DEFAULT);
 
-                    File fileOBJ = new File(dir, mainUser.getEmail() + ".obj");
-                    try {
-                        FileOutputStream f = new FileOutputStream(fileOBJ);
-                        f.write(OBJ);
-                        //Toast.makeText(HomeActivity.this, "Saved OBJ " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                        File root = android.os.Environment.getExternalStorageDirectory();
+                        File dir = new File(root.getAbsolutePath() + "/Heads/");
+                        dir.mkdirs();
+                        byte[] OBJ = Base64.decode(mHead.getObj(), Base64.DEFAULT);
+
+                        File fileOBJ = new File(dir, mainUser.getEmail() + ".obj");
+                        try {
+                            FileOutputStream f = new FileOutputStream(fileOBJ);
+                            f.write(OBJ);
+                            //Toast.makeText(HomeActivity.this, "Saved OBJ " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                        byte[] MTL = Base64.decode(mHead.getMtl(), Base64.DEFAULT);
+
+                        File fileMTL = new File(dir, mainUser.getEmail() + ".mtl");
+                        try {
+                            FileOutputStream f = new FileOutputStream(fileMTL);
+                            f.write(MTL);
+                            //Toast.makeText(HomeActivity.this, "Saved MTL " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                        }
+
+                        byte[] PNG1 = Base64.decode(mHead.getPng1(), Base64.DEFAULT);
+
+                        File filePNG1 = new File(dir, mainUser.getEmail() + "_face.png");
+                        try {
+                            FileOutputStream f = new FileOutputStream(filePNG1);
+                            f.write(PNG1);
+                            //Toast.makeText(HomeActivity.this, "Saved PNG 1 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                        }
+
+                        byte[] PNG2 = Base64.decode(mHead.getPng2(), Base64.DEFAULT);
+
+                        File filePNG2 = new File(dir, mainUser.getEmail() + "_hair.png");
+                        try {
+                            FileOutputStream f = new FileOutputStream(filePNG2);
+                            f.write(PNG2);
+                            downHead = true;
+                            Toast.makeText(HomeActivity.this, "Saved new head success " + mainUser.getId(), Toast.LENGTH_LONG).show();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                        }
+                        downHead = true;
                     }
-
-
-                    byte[] MTL = Base64.decode(mHead.getMtl(), Base64.DEFAULT);
-
-                    File fileMTL = new File(dir, mainUser.getEmail() + ".mtl");
-                    try {
-                        FileOutputStream f = new FileOutputStream(fileMTL);
-                        f.write(MTL);
-                        //Toast.makeText(HomeActivity.this, "Saved MTL " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                    }
-
-                    byte[] PNG1 = Base64.decode(mHead.getPng1(), Base64.DEFAULT);
-
-                    File filePNG1 = new File(dir, mainUser.getEmail() + "_face.png");
-                    try {
-                        FileOutputStream f = new FileOutputStream(filePNG1);
-                        f.write(PNG1);
-                        //Toast.makeText(HomeActivity.this, "Saved PNG 1 " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                    }
-
-                    byte[] PNG2 = Base64.decode(mHead.getPng2(), Base64.DEFAULT);
-
-                    File filePNG2 = new File(dir, mainUser.getEmail() + "_hair.png");
-                    try {
-                        FileOutputStream f = new FileOutputStream(filePNG2);
-                        f.write(PNG2);
-                        Toast.makeText(HomeActivity.this, "Saved data head success " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(HomeActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                    }
-
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Head> call, Throwable t) {
+                @Override
+                public void onFailure(Call<Head> call, Throwable t) {
+                    downHead = false;
+                }
+            });
 
-            }
-        });
+        }
+        else {
+            Toast.makeText(HomeActivity.this, "OLD HEAD", Toast.LENGTH_LONG).show();
+        }
+
 
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -180,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         File root = android.os.Environment.getExternalStorageDirectory();
-        File img = new File(root.getAbsolutePath() + "/DCIM/AVATAR/mainUser.jpg");
+        File img = new File(root.getAbsolutePath() + "/DCIM/mainUser.jpg");
 
         if(img.exists()){
 
@@ -262,70 +275,117 @@ public class HomeActivity extends AppCompatActivity {
                 File x = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Glasses/" + IDGLASS + ".obj");
 
                 if(x.exists() == false){
-                    Call<GlassesData> callGlassesData = mManager.getGlassesDataService().getGlassesData(IDGLASS);
-
-                    callGlassesData.enqueue(new Callback<GlassesData>() {
+                    new AsyncTask<Void, Void, Void>(){
+                        ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
                         @Override
-                        public void onResponse(Call<GlassesData> call, Response<GlassesData> response) {
-                            mGlassesData = response.body();
-                            File root = android.os.Environment.getExternalStorageDirectory();
-                            File dir = new File(root.getAbsolutePath() + "/Glasses/");
-                            dir.mkdirs();
-                            byte[] OBJ = Base64.decode(mGlassesData.getObj(), Base64.DEFAULT);
-                            File file1 = new File(dir, IDGLASS + ".obj");
-                            try {
-                                FileOutputStream f = new FileOutputStream(file1);
-
-                                f.write(OBJ);
-                                //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                            }
-
-                            byte[] MTL = Base64.decode(mGlassesData.getMtl(), Base64.DEFAULT);
-
-                            File file2 = new File(dir, IDGLASS + ".mtl");
-                            try {
-                                FileOutputStream f = new FileOutputStream(file2);
-
-                                f.write(MTL);
-                                //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
-                            }
-
-                            Toast.makeText(HomeActivity.this, "Get glassses suuuuccccesss " + IDGLASS, Toast.LENGTH_LONG).show();
-
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+//                            dialog.setCancelable(false);
+//                            dialog.setMessage("meo meo meo, program is loading GLASSES " + IDGLASS );
+//                            dialog.show();
+                            //Toast.makeText(HomeActivity.this, "MEO MEO", Toast.LENGTH_LONG).show();
                         }
 
                         @Override
-                        public void onFailure(Call<GlassesData> call, Throwable t) {
-                            Toast.makeText(HomeActivity.this, "Faillllll", Toast.LENGTH_LONG).show();
+                        protected Void doInBackground(Void... params) {
+                            Call<GlassesData> callGlassesData = mManager.getGlassesDataService().getGlassesData(IDGLASS);
+
+                            callGlassesData.enqueue(new Callback<GlassesData>() {
+                                @Override
+                                public void onResponse(Call<GlassesData> call, Response<GlassesData> response) {
+                                    mGlassesData = response.body();
+                                    File root = android.os.Environment.getExternalStorageDirectory();
+                                    File dir = new File(root.getAbsolutePath() + "/Glasses/");
+                                    dir.mkdirs();
+                                    byte[] OBJ = Base64.decode(mGlassesData.getObj(), Base64.DEFAULT);
+                                    File file1 = new File(dir, IDGLASS + ".obj");
+                                    try {
+                                        FileOutputStream f = new FileOutputStream(file1);
+
+                                        f.write(OBJ);
+                                        //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                        //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    byte[] MTL = Base64.decode(mGlassesData.getMtl(), Base64.DEFAULT);
+
+                                    File file2 = new File(dir, IDGLASS + ".mtl");
+                                    try {
+                                        FileOutputStream f = new FileOutputStream(file2);
+
+                                        f.write(MTL);
+                                        //Toast.makeText(MainActivity.this, "Saved avatar " + mainUser.getId(), Toast.LENGTH_SHORT).show();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                        //Toast.makeText(MainActivity.this, "fffffff", Toast.LENGTH_SHORT).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        //Toast.makeText(MainActivity.this, "fffffffdddd", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    Toast.makeText(HomeActivity.this, "Get new glassses success " + IDGLASS, Toast.LENGTH_LONG).show();
+
+                                    Intent intent = new Intent(HomeActivity.this, ModelActivity.class);
+                                    intent.putExtra("Name", myFavochose.getName());
+                                    intent.putExtra("Id", myFavochose.getId());
+                                    intent.putExtra("Brigde", myFavochose.getBridge());
+                                    intent.putExtra("Eye", myFavochose.getEye());
+                                    intent.putExtra("Temple", myFavochose.getTemple());
+                                    intent.putExtra("Price", myFavochose.getPrice());
+                                    intent.putExtra("Producer", myFavochose.getProducer());
+                                    intent.putExtra("Status", myFavochose.getStatus());
+                                    intent.putExtra("Color", myFavochose.getColor());
+
+                                    HomeActivity.this.startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Call<GlassesData> call, Throwable t) {
+                                    Toast.makeText(HomeActivity.this, "Fail", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+
+                            return null;
+                        }
+                        @Override
+                        protected void onPostExecute(Void result) {
+                            super.onPostExecute(result);
+                            if (dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                            //Toast.makeText(HomeActivity.this, "MEO HIHI", Toast.LENGTH_LONG).show();
+
 
                         }
-                    });
+
+                    }.execute();
+
+
+                }
+                else {
+                    Toast.makeText(HomeActivity.this, "Old glassses loaded " + IDGLASS, Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(HomeActivity.this, ModelActivity.class);
+                    intent.putExtra("Name", myFavochose.getName());
+                    intent.putExtra("Id", myFavochose.getId());
+                    intent.putExtra("Brigde", myFavochose.getBridge());
+                    intent.putExtra("Eye", myFavochose.getEye());
+                    intent.putExtra("Temple", myFavochose.getTemple());
+                    intent.putExtra("Price", myFavochose.getPrice());
+                    intent.putExtra("Producer", myFavochose.getProducer());
+                    intent.putExtra("Status", myFavochose.getStatus());
+                    intent.putExtra("Color", myFavochose.getColor());
+
+                    HomeActivity.this.startActivity(intent);
                 }
 
-                Intent intent = new Intent(HomeActivity.this, ModelActivity.class);
-                intent.putExtra("Name", myFavochose.getName());
-                intent.putExtra("Id", myFavochose.getId());
-                intent.putExtra("Brigde", myFavochose.getBridge());
-                intent.putExtra("Eye", myFavochose.getEye());
-                intent.putExtra("Temple", myFavochose.getTemple());
-                intent.putExtra("Price", myFavochose.getPrice());
-                intent.putExtra("Producer", myFavochose.getProducer());
-                intent.putExtra("Status", myFavochose.getStatus());
-                intent.putExtra("Color", myFavochose.getColor());
 
-                HomeActivity.this.startActivity(intent);
                 //Toast.makeText(Navigation.this, "DA SENT", Toast.LENGTH_SHORT).show();
             }
         });

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-            android:hint="abc@def.com"
+            android:text="intel"
             android:id="@+id/edtEmail"
             android:textCursorDrawable="@null"
             android:background="#d9ead2"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-            android:hint="123456"
+            android:text="123"
             android:id="@+id/edtPassword"
             android:textCursorDrawable="@null"
             android:backgroundTintMode="add"
