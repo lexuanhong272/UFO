@@ -12,4 +12,6 @@ import retrofit2.http.GET;
 public interface GlassesInfoService {
     @GET("/api/glassesinfo")
     Call<List<Glasses>> getAllGlassesInfo();
+
+
 }

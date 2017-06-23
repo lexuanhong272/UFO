@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+
+
+    android:background="#ffffff"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/ln01"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imv_thumnail"
+                android:src="@mipmap/ic_launcher"
+                />
+
+            <TextView
+                android:layout_marginTop="-30dp"
+                android:layout_marginLeft="10dp"
+                android:text="eeeee"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="ccccc"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_centerInParent="true"
+                android:text="ddddd"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_marginTop="40dp"
+                android:text="aaaaa"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:layout_centerInParent="true"
+                android:text="bbbbb"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_producer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:text="eeeee"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:text="fffff"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_eye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:text="ggggg"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_temple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:text="hhhhh"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/txt_bridge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

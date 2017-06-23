@@ -47,12 +47,13 @@ public class LoaderObjects extends LoaderScenes {
 					// 3D Axis
 					Object3DData axis = Object3DBuilder.buildAxis().setId("axis");
 					axis.setColor(new float[] { 0.0f, 0.0f, 0.0f, 1.0f });
-					axis.centerAndScale(4);
+					axis.centerAndScale(3.0f);
+					axis.setPosition(new float[] {0.0f, 0.0f, 0.0f});
 					addObject(axis);
 
 					try {
 						objFace = Object3DBuilder.loadFromSD("Heads/", mainUser.getEmail() + ".obj");
-						objFace.setPosition(new float[] { 0f, 0f, 0f });
+						objFace.setPosition(new float[] { 0.0f, 0f, 0f });
 						objFace.setRotation(new float[] {0f, 180f, 0f});
 						objFace.centerAndScale(2);
 						addObject(objFace);
@@ -60,10 +61,9 @@ public class LoaderObjects extends LoaderScenes {
 						errors.add(ex);
 					}
 
-
 					try {
 						objGlass = Object3DBuilder.loadFromSD("Glasses/", IDGLASS + ".obj");
-						objGlass.setPosition(new float[] { 0f, 0.3f, 0.2f });
+						objGlass.setPosition(new float[] { 0.0f, 0.3f, 0.2f });
 						objGlass.setRotation(new float[] {0f, 180f, 0f});
 						addObject(objGlass);
 					} catch (Exception ex) {
@@ -73,6 +73,9 @@ public class LoaderObjects extends LoaderScenes {
 				} catch (Exception ex) {
 					errors.add(ex);
 				}
+
+
+
 				return null;
 			}
 

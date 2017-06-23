@@ -31,6 +31,19 @@ public class Glasses implements Serializable {
     @Expose
     private String Thumnail;
 
+    public Glasses(int bridge, String color, int eye, String id, String name, Float price, String producer, String status, int temple, String thumnail) {
+        Bridge = bridge;
+        Color = color;
+        Eye = eye;
+        Id = id;
+        Name = name;
+        Price = price;
+        Producer = producer;
+        Status = status;
+        Temple = temple;
+        Thumnail = thumnail;
+    }
+
     public int getBridge() {
         return Bridge;
     }

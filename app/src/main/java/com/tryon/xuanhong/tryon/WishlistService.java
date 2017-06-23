@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface WishlistService {
 
     @GET("/api/wishlist")
-    Call<List<String>> getWishList(@Query("userid") int userid);
+    Call<List<Glasses>> getWishList(@Query("userid") int userid);
 
     @POST("/api/wishlist")
     Call<Integer> addWishList(@Query("userid") int userid, @Query("glassesid") String glassesid);

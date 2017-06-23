@@ -23,12 +23,10 @@ import retrofit2.http.Query;
 
 public class GlassesAdapter extends SearchAdapter<Glasses> {
     class ViewHolder {
-        @InjectView(R.id.txt_idglasses)
-        TextView txt_id;
+        @InjectView(R.id.txt_idglasses)    TextView txt_id;
         @InjectView(R.id.txt_priceglasses) TextView txt_price;
         @InjectView(R.id.txt_statusglasses) TextView txt_status;
-        @InjectView(R.id.imgv_glasses)
-        ImageView imgv_glasses;
+        @InjectView(R.id.imgv_glasses)      ImageView imgv_glasses;
 
 
         public ViewHolder(View view) {

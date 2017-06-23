@@ -14,9 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +31,15 @@ import com.tryon.xuanhong.tryon.object3D.services.LoaderScenes;
 import com.tryon.xuanhong.tryon.object3D.utils.Utils;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.tryon.xuanhong.tryon.HomeActivity.IDGLASS;
+
+import static com.tryon.xuanhong.tryon.HomeActivity.myFavochose;
 import static com.tryon.xuanhong.tryon.MainActivity.mainUser;
 
 public class ModelActivity extends Activity {
@@ -60,7 +66,9 @@ public class ModelActivity extends Activity {
 	boolean isPressed = true;
 	LinearLayout linearLayoutAddToCart;
     LinearLayout linearLayout;
+	LinearLayout linearLayoutSpinner;
 
+	public static float radient = 0.05f;
 	public static int buttonWidth = 210;
 	public static String colorUp = "#4F9C5F";
 	public static String colorDown = "#3C7896";
@@ -68,13 +76,42 @@ public class ModelActivity extends Activity {
 
 	TextView txtDetails;
 
+	Spinner spMonHoc;
+	ArrayList<Float> arrMonHoc;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//setContentView(R.layout.activity_demo);
+		spMonHoc = new Spinner(this);
+		arrMonHoc = new ArrayList<Float>();
 
-		// Try to get input parameters
+		arrMonHoc.add(0.05f);
+		arrMonHoc.add(0.1f);
+		arrMonHoc.add(0.15f);
+		arrMonHoc.add(0.2f);
+		arrMonHoc.add(0.25f);
+		arrMonHoc.add(0.3f);
+		arrMonHoc.add(0.35f);
+		arrMonHoc.add(0.4f);
+		arrMonHoc.add(0.45f);
+		arrMonHoc.add(0.5f);
+
+		ArrayAdapter adapter = new ArrayAdapter(ModelActivity.this, android.R.layout.simple_spinner_dropdown_item, arrMonHoc);
+		spMonHoc.setAdapter(adapter);
+		spMonHoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				Toast.makeText(ModelActivity.this, "Set gradient = " +arrMonHoc.get(position), Toast.LENGTH_SHORT).show();
+				radient = arrMonHoc.get(position);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
 			this.paramAssetDir = b.getString("assetDir");
@@ -86,7 +123,7 @@ public class ModelActivity extends Activity {
 
 		handler = new Handler(getMainLooper());
 
-		Intent mychose = getIntent();
+		final Intent mychose = getIntent();
 		String Id = mychose.getStringExtra("Id");
 		String Name = mychose.getStringExtra("Name");
 		String Price = mychose.getStringExtra("Price");
@@ -97,19 +134,19 @@ public class ModelActivity extends Activity {
 		String Status = mychose.getStringExtra("Status");
 		String Color = mychose.getStringExtra("Color");
 
-		String details = "\n" + "   ID: " + Id + "\n\n" +
-		"   NAME: " + Name + "\n\n" + "   COLOR: " + Color + "\n\n" + "   PRICE: " + Price + "\n\n" + "   PRODUCER: " + Producer + "\n\n" +
-		"   TEMPLE: " + Temple + "\n\n" + "   EYE: " + Eye + "\n\n" + "   BRIDGE: " + Bridge + "\n\n" + "   STATUS: " + Status;
+		String details =
+		"\n   NAME: " + Name + "\n\n" + "   COLOR: " + Color + "\n\n" + "   PRICE: " + Price + "\n\n" + "   PRODUCER: " + Producer + "\n\n" +
+		"   STATUS: " + Status;
 
 
 		Toast.makeText(ModelActivity.this, Id + Price + Producer, Toast.LENGTH_LONG).show();
 
 		txtDetails = new TextView(this);
 		txtDetails.setBackgroundColor(android.graphics.Color.parseColor("#FFEFD5"));
-		txtDetails.setHeight(1100);
-		txtDetails.setWidth(600);
+		txtDetails.setHeight(700);
+		txtDetails.setWidth(450);
 		txtDetails.setText(details);
-		txtDetails.setTextSize(20);
+		txtDetails.setTextSize(18);
 
 		gLView = new ModelSurfaceView(this);
 
@@ -133,19 +170,12 @@ public class ModelActivity extends Activity {
 					callAddWL.enqueue(new Callback<Integer>() {
 						@Override
 						public void onResponse(Call<Integer> call, Response<Integer> response) {
-							if(response.isSuccessful()){
-								Toast.makeText(ModelActivity.this, mainUser.getId() + " == " +IDGLASS, Toast.LENGTH_LONG).show();
 
-							}
-							else {
-								Toast.makeText(ModelActivity.this, "FAILL", Toast.LENGTH_LONG).show();
-
-							}
 						}
 
 						@Override
 						public void onFailure(Call<Integer> call, Throwable t) {
-							Toast.makeText(ModelActivity.this, "faill", Toast.LENGTH_LONG).show();
+							//Toast.makeText(ModelActivity.this, "faill", Toast.LENGTH_LONG).show();
 
 						}
 					});
@@ -161,14 +191,7 @@ public class ModelActivity extends Activity {
 					callRemoveWL.enqueue(new Callback<Integer>() {
 						@Override
 						public void onResponse(Call<Integer> call, Response<Integer> response) {
-							if(response.isSuccessful()){
-								Toast.makeText(ModelActivity.this, mainUser.getId() + " == " +IDGLASS, Toast.LENGTH_LONG).show();
 
-							}
-							else {
-								Toast.makeText(ModelActivity.this, "FAILL", Toast.LENGTH_LONG).show();
-
-							}
 						}
 
 						@Override
@@ -189,14 +212,14 @@ public class ModelActivity extends Activity {
 		btnXUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 		btnXUP.setWidth(buttonWidth);
 
-		btnXUP.setText("X ++");
+		btnXUP.setText("X+");
 		btnXUP.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posBBBBB += 0.1f;
+				posBBBBB += radient;
 				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
 				//Toast.makeText(ModelActivity.this, "X ++ ^^", Toast.LENGTH_SHORT).show();
 			}
@@ -204,7 +227,7 @@ public class ModelActivity extends Activity {
 
 
 		btnXDOWN = new Button(this);
-		btnXDOWN.setText("X --");
+		btnXDOWN.setText("X-");
 		btnXDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 		btnXDOWN.setWidth(buttonWidth);
 
@@ -214,14 +237,14 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posBBBBB -= 0.1f;
+				posBBBBB -= radient;
 				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
 				//Toast.makeText(ModelActivity.this, "X -- ^^", Toast.LENGTH_SHORT).show();
 			}
 		});
 
 		btnYUP = new Button(this);
-		btnYUP.setText("Y ++");
+		btnYUP.setText("Y+");
 		btnYUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 		btnYUP.setWidth(buttonWidth);
 
@@ -231,7 +254,7 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posNNNNN += 0.1f;
+				posNNNNN += radient;
 				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
 				//Toast.makeText(ModelActivity.this, "Y ++ ^^", Toast.LENGTH_SHORT).show();
 			}
@@ -239,7 +262,7 @@ public class ModelActivity extends Activity {
 
 
 		btnYDOWN = new Button(this);
-		btnYDOWN.setText("Y --");
+		btnYDOWN.setText("Y-");
 		btnYDOWN.setWidth(buttonWidth);
 		btnYDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 
@@ -249,14 +272,14 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posNNNNN -= 0.1f;
+				posNNNNN -= radient;
 				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
 				//Toast.makeText(ModelActivity.this, "Y -- ^^", Toast.LENGTH_SHORT).show();
 			}
 		});
 
 		btnZUP = new Button(this);
-		btnZUP.setText("Z ++");
+		btnZUP.setText("Z+");
 		btnZUP.setWidth(buttonWidth);
 		btnZUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 
@@ -266,14 +289,14 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posMMMMM += 0.1f;
+				posMMMMM += radient;
 				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
 				//Toast.makeText(ModelActivity.this, "Z ++ ^^", Toast.LENGTH_SHORT).show();
 			}
 		});
 
 		btnZDOWN = new Button(this);
-		btnZDOWN.setText("Z --");
+		btnZDOWN.setText("Z-");
 		btnZDOWN.setWidth(buttonWidth);
 		btnZDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 
@@ -283,7 +306,7 @@ public class ModelActivity extends Activity {
 				float posBBBBB = LoaderObjects.objGlass.getPositionX();
 				float posNNNNN = LoaderObjects.objGlass.getPositionY();
 				float posMMMMM = LoaderObjects.objGlass.getPositionZ();
-				posMMMMM -= 0.1f;
+				posMMMMM -= radient;
 				LoaderObjects.objGlass.setPosition(new float[] {posBBBBB, posNNNNN, posMMMMM});
 				//Toast.makeText(ModelActivity.this, "Z -- ^^", Toast.LENGTH_SHORT).show();
 			}
@@ -291,7 +314,7 @@ public class ModelActivity extends Activity {
 
 
 		btnRotateXUP = new Button(this);
-		btnRotateXUP.setText("Rotate X ++");
+		btnRotateXUP.setText("Rotate X+");
 		btnRotateXUP.setWidth(buttonWidth + 50);
 		btnRotateXUP.setBackgroundColor(android.graphics.Color.parseColor(colorUp));
 
@@ -300,7 +323,7 @@ public class ModelActivity extends Activity {
 			public void onClick(View v) {
 				float scale1[] = new float[3];
 				scale1 = LoaderObjects.objGlass.getRotation();
-				scale1[0] += 1.5;
+				scale1[0] += radient* 100 ;
 				LoaderObjects.objGlass.getRotationZ();
 				LoaderObjects.objGlass.setRotation(scale1);
 			}
@@ -308,7 +331,7 @@ public class ModelActivity extends Activity {
 
 
 		btnRotateXDOWN = new Button(this);
-		btnRotateXDOWN.setText("Rotate X --");
+		btnRotateXDOWN.setText("Rotate X-");
 		btnRotateXDOWN.setWidth(buttonWidth + 50);
 		btnRotateXDOWN.setBackgroundColor(android.graphics.Color.parseColor(colorDown));
 
@@ -317,12 +340,16 @@ public class ModelActivity extends Activity {
 			public void onClick(View v) {
 				float scale2[] = new float[3];
 				scale2 = LoaderObjects.objGlass.getRotation();
-				scale2[0] -= 1.5f;
+				scale2[0] -= radient * 100;
 				LoaderObjects.objGlass.getRotationZ();
 				LoaderObjects.objGlass.setRotation(scale2);
 			}
 		});
 
+
+		linearLayoutSpinner = new LinearLayout(this);
+		linearLayoutSpinner.setGravity(Gravity.CENTER | Gravity.RIGHT);
+		linearLayoutSpinner.addView(spMonHoc);
 
 		linearLayoutFavorite = new LinearLayout(this);
 		linearLayoutFavorite.setGravity(Gravity.TOP | Gravity.RIGHT);
@@ -354,6 +381,7 @@ public class ModelActivity extends Activity {
 		setContentView(gLView);
 		addContentView(linearLayoutFavorite, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		addContentView(linearLayoutDetails, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		addContentView(linearLayoutSpinner, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         addContentView(linearLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		addContentView(linearLayoutAddToCart, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

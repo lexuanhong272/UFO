@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.tryon.xuanhong.tryon.WishListActivity">
 
-    <TextView
-        android:text="gggggggggggggggggggggg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-
+    <GridView
+        android:layout_marginTop="50dp"
+        android:id="@+id/grid_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="2"
+        />
 </android.support.constraint.ConstraintLayout>

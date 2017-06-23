@@ -203,7 +203,7 @@ public class TouchController {
 
 					Log.i("Camera", "Zooming '" + zoomFactor + "'...");
 
-					mRenderer.getCamera().MoveCameraZ(zoomFactor);
+					//mRenderer.getCamera().MoveCameraZ(zoomFactor);
 				}
 				if (isRotating) {
 					touchStatus = TOUCH_STATUS_ROTATING_CAMERA;

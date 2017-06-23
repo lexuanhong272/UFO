@@ -72,9 +72,13 @@ public class HomeActivity extends AppCompatActivity {
     private Manager mManager;
     List<Glasses> userGlasses;
 
+
     public static GlassesData mGlassesData;
     public static Head mHead;
     public static String IDGLASS = "glasses1";
+
+    public static List<Glasses> temp;
+    public static Glasses myFavochose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +208,7 @@ public class HomeActivity extends AppCompatActivity {
                     for(int i = 0; i < userGlasses.size(); i++) {
                         Glasses glasses = userGlasses.get(i);
                         mGlasses.add(glasses);
+
                     }
                     Log.d("mGlasses", mGlasses.toString());
                     gridView.setAdapter(mAdapter);
@@ -251,8 +256,8 @@ public class HomeActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Glasses chose = (Glasses) gridView.getItemAtPosition(position);
-                IDGLASS = chose.getId();
+                myFavochose = (Glasses) gridView.getItemAtPosition(position);
+                IDGLASS = myFavochose.getId();
 
                 File x = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Glasses/" + IDGLASS + ".obj");
 
@@ -310,15 +315,15 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(HomeActivity.this, ModelActivity.class);
-                intent.putExtra("Name", chose.getName());
-                intent.putExtra("Id", chose.getId());
-                intent.putExtra("Brigde", chose.getBridge());
-                intent.putExtra("Eye", chose.getEye());
-                intent.putExtra("Temple", chose.getTemple());
-                intent.putExtra("Price", chose.getPrice());
-                intent.putExtra("Producer", chose.getProducer());
-                intent.putExtra("Status", chose.getStatus());
-                intent.putExtra("Color", chose.getColor());
+                intent.putExtra("Name", myFavochose.getName());
+                intent.putExtra("Id", myFavochose.getId());
+                intent.putExtra("Brigde", myFavochose.getBridge());
+                intent.putExtra("Eye", myFavochose.getEye());
+                intent.putExtra("Temple", myFavochose.getTemple());
+                intent.putExtra("Price", myFavochose.getPrice());
+                intent.putExtra("Producer", myFavochose.getProducer());
+                intent.putExtra("Status", myFavochose.getStatus());
+                intent.putExtra("Color", myFavochose.getColor());
 
                 HomeActivity.this.startActivity(intent);
                 //Toast.makeText(Navigation.this, "DA SENT", Toast.LENGTH_SHORT).show();
